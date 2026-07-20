@@ -4,21 +4,30 @@
 typedef struct Node {
   int data;
   struct Node *next;
-  // struct Node *prev;
+  struct Node *prev;
 } Node;
 
-void insert_head(Node **head, int value) {
-  Node *new_node = malloc(sizeof(Node));
-
-  if (new_node == NULL) {
-    printf("failed to allocated memory\n");
-    return;
-  }
+struct Node *create_node(int value) {
+  struct Node *new_node = malloc(sizeof(struct Node));
 
   new_node->data = value;
 
-  new_node->next = *head;
+  new_node->prev = NULL;
+  new_node->next = NULL;
 
+  return new_node;
+}
+
+void insert_head(Node **head, int value) {
+  Node *new_node = create_node(value);
+
+  if (*head == NULL) {
+    *head = new_node;
+    return;
+  }
+
+  new_node->next = *head;
+  (*head)->prev = new_node;
   *head = new_node;
 }
 
